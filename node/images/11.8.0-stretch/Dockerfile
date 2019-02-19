@@ -13,4 +13,10 @@ RUN ( curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key ad
     && curl -s -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/aws-iam-authenticator \
     && chmod +x /usr/local/bin/aws-iam-authenticator
 
+RUN mkdir -p /etc/sudoers.d  \
+    && groupadd --gid 3434 circleci \
+    && useradd --uid 3434 --gid circleci --shell /bin/bash --create-home circleci \
+    && echo 'circleci ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-circleci \
+    && echo 'Defaults    env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers.d/env_keep
+
 USER circleci
