@@ -1,0 +1,60 @@
+
+
+version: 2
+
+setup: &setup 
+  docker:
+  - image: docker:17.05.0-ce-git
+  steps:
+    - checkout
+    - setup_remote_docker
+
+build_image: &build_iamge
+  run: 
+    command: |
+      cd ${BUILD_DIR}
+
+      docker login \
+        --username ${DOCKER_USER} \
+        --password ${DOCKER_PASS}
+      
+      docker build \
+        -t tvtime/${NAME}:latest \
+        -t tvtime/${NAME}:${VERSION} .
+      
+      docker push tvtime/${NAME}
+      docker push tvtime/${NAME}:${VERSION}
+
+jobs:
+  node:
+    environment:
+      NAME: node
+      VERSION: 11.8.0-stretch
+      BUILD_DIR: ~/project/docker-images/node/images
+    <<: *setup
+    <<: *build_iamge
+
+  php:
+    environment:
+      NAME: php
+      VERSION: 7.1.18-zts-stretch
+      BUILD_DIR: ~/project/docker-images/node/images
+    <<: *setup
+    <<: *build_iamge
+
+  python:
+    environment:
+      NAME: python
+      VERSION: 3.5.6-stretch
+      BUILD_DIR: ~/project/docker-images/node/images
+    <<: *setup
+    <<: *build_iamge
+    
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - node
+      - php
+      - python
