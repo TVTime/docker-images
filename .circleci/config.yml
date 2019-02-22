@@ -1,27 +1,25 @@
-
-
 version: 2
 
-setup: &setup 
+setup: &setup
   docker:
-  - image: docker:17.05.0-ce-git
+    - image: docker:17.05.0-ce-git
   steps:
     - checkout
     - setup_remote_docker
 
 build_image: &build_iamge
-  run: 
+  run:
     command: |
       cd ${BUILD_DIR}
 
       docker login \
         --username ${DOCKER_USER} \
         --password ${DOCKER_PASS}
-      
+
       docker build \
         -t tvtime/${NAME}:latest \
         -t tvtime/${NAME}:${VERSION} .
-      
+
       docker push tvtime/${NAME}
       docker push tvtime/${NAME}:${VERSION}
 
@@ -29,7 +27,7 @@ jobs:
   node:
     environment:
       NAME: node
-      VERSION: 11.8.0-stretch
+      VERSION: 8.15.0-stretch
       BUILD_DIR: ~/project/docker-images/node/images
     <<: *setup
     <<: *build_iamge
@@ -49,7 +47,6 @@ jobs:
       BUILD_DIR: ~/project/docker-images/node/images
     <<: *setup
     <<: *build_iamge
-    
 
 workflows:
   version: 2
