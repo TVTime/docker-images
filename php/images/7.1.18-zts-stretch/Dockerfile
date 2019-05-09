@@ -13,6 +13,7 @@ RUN ( curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key ad
     && sudo pecl channel-update pecl.php.net \
     && yes | sudo pecl install mcrypt-1.0.0 \
     && docker-php-ext-enable mcrypt \
+    && ( curl -s https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer  ) \
     && curl -s -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/aws-iam-authenticator \
     && chmod +x /usr/local/bin/aws-iam-authenticator
 
