@@ -4,7 +4,7 @@ USER root
 
 RUN apt-get update \
     && apt-get install -y python3-pip python3-dev python3-venv build-essential ruby apt-transport-https \
-    && npm install -g grunt grunt-contrib-sass sass \
+    && npm install -g grunt grunt-contrib-sass sass gulp-cli \
     && pip3 install awscli awsebcli boto3
 
 RUN ( curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - ) \
